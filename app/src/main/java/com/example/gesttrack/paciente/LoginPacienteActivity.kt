@@ -1,0 +1,4 @@
+package com.example.gesttrack.paciente
+
+class LoginPacienteActivity {
+}

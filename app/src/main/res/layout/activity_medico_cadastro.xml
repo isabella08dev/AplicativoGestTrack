@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fundo_medico_cadastro"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="180dp">
+
+        <EditText
+            android:id="@+id/editNomeMedico"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="Nome"
+            android:padding="15dp"
+            android:background="@drawable/botao_bege_borda_azul"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/editCRM"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="15dp"
+            android:hint="CRM"
+            android:padding="15dp"
+            android:background="@drawable/botao_bege_borda_azul"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/editTelefoneMedico"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="15dp"
+            android:hint="Telefone"
+            android:padding="15dp"
+            android:background="@drawable/botao_bege_borda_azul"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/editEmailMedico"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="15dp"
+            android:hint="Email"
+            android:padding="15dp"
+            android:background="@drawable/botao_bege_borda_azul"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/editSenhaMedico"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="15dp"
+            android:hint="Senha"
+            android:padding="15dp"
+            android:background="@drawable/botao_bege_borda_azul"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:inputType="textEmailAddress" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCadastrarMedico"
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/botao_circular_azul"
+            android:text="Cadastrar"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:stateListAnimator="@null"
+            android:theme="@style/ThemeOverlay.AppCompat"
+            app:backgroundTint="@null" />
+
+    </LinearLayout>
+</ScrollView>
