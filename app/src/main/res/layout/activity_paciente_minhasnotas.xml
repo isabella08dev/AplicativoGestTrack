@@ -1,10 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fundo_paciente_notas"
     android:padding="20dp">
+
+    <EditText
+        android:id="@+id/etNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="180dp"
+        android:layout_marginEnd="-6dp"
+        android:layout_marginRight="-6dp"
+        android:layout_marginBottom="16dp"
+        android:layout_toStartOf="@+id/btnAdd"
+        android:layout_toLeftOf="@+id/btnAdd"
+        android:background="@drawable/botao_bege_borda_azul"
+        android:hint="Digite sua nota"
+        android:padding="16dp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#badbd2" />
+
+    <Button
+        android:id="@+id/btnAdd"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/etNote"
+        android:layout_alignBottom="@id/etNote"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="-1dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginRight="19dp"
+        android:layout_marginBottom="1dp"
+        android:backgroundTint="#badbd2"
+        android:elevation="9dp"
+        android:text="+"
+        android:textColor="#FFFFFF" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvNotes"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/etNote"
+        android:layout_marginTop="21dp"
+        android:clipToPadding="false"
+        android:paddingBottom="20dp" />
 
 </RelativeLayout>
