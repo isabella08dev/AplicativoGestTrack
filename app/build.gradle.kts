@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "com.example.gesttrack"
-    compileSdk = 36
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.gesttrack"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -40,7 +40,6 @@ android {
 
 dependencies {
 
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -52,7 +51,7 @@ dependencies {
 
 
     implementation("androidx.preference:preference-ktx:1.2.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
+
     implementation("androidx.cardview:cardview:1.0.0")
 
     implementation(platform("io.github.jan-tennert.supabase:bom:3.2.2"))
@@ -70,8 +69,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
-
-
 
 
 }
