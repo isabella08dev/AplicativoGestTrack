@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayoutMedico"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/fundo_paciente_calendario"
+    android:padding="20dp">
+
+    <CalendarView
+        android:id="@+id/calendarViewMedico"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:dateTextAppearance="@style/DateText"
+        android:weekDayTextAppearance="@style/WeekDayText" />
+
+    <Button
+        android:id="@+id/btnMarcarConsulta"
+        android:layout_width="wrap_content"
+        android:layout_height="64dp"
+        android:layout_below="@id/calendarViewMedico"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="#DE3163"
+        android:enabled="false"
+        android:text="Marcar Consulta"
+        android:textColor="#FFFFFF"
+        android:textSize="22sp" />
+
+</RelativeLayout>
