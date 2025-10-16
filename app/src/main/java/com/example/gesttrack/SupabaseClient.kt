@@ -1,3 +1,4 @@
+
 package com.example.gesttrack
 
 import io.github.jan.supabase.SupabaseClient
@@ -14,5 +15,3 @@ object SupabaseClient {
         install(Postgrest)
     }
 }
-
-

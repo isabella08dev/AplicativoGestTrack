@@ -7,15 +7,18 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.gesttrack.R
 import com.example.gesttrack.SupabaseClient
-import io.github.jan.supabase.gotrue.auth
+
+
+import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.providers.builtin.Email
 import io.github.jan.supabase.postgrest.from
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
-import com.example.gesttrack.R
 
 class CadastroPacienteActivity : AppCompatActivity() {
 
@@ -88,13 +91,13 @@ class CadastroPacienteActivity : AppCompatActivity() {
                 val client = SupabaseClient.client
 
 
-                val session = client.auth.signUpWith(io.github.jan.supabase.gotrue.providers.builtin.Email) {
+                // 1. Registrar o usuário no Supabase Auth
+                val session = client.auth.signUpWith(Email) {
                     this.email = email
                     this.password = senha
                 }
 
-
-                // 2️⃣ Insere dados no Realtime (tabela Pacientes)
+                // 2. Inserir os dados do paciente na tabela "Pacientes"
                 val data = mapOf(
                     "nome" to nome,
                     "cpf" to cpf,
@@ -102,7 +105,9 @@ class CadastroPacienteActivity : AppCompatActivity() {
                     "data_nascimento" to dataNascimento,
                     "telefone" to telefone,
                     "email" to email,
-                    "senha" to senha,
+                    "senha" to senha, // Nota: A senha não deve ser salva em texto puro na tabela.
+                    // Se o Supabase Auth for usado, basta salvar o 'user_id'
+                    // da sessão na tabela do paciente.
                     "data_criacao" to LocalDateTime.now().toString()
                 )
 
@@ -117,7 +122,7 @@ class CadastroPacienteActivity : AppCompatActivity() {
 
                     val intent = Intent(
                         this@CadastroPacienteActivity,
-                        LoginPacienteActivity::class.java
+                        PrincipalPacienteActivity::class.java
                     )
                     startActivity(intent)
                     finish()

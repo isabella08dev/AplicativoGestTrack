@@ -9,12 +9,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gesttrack.R
 import com.example.gesttrack.SupabaseClient
-import io.github.jan.supabase.gotrue.auth
-import io.github.jan.supabase.gotrue.providers.builtin.Email
+
+import io.github.jan.supabase.auth.auth
+import io.github.jan.supabase.auth.providers.builtin.Email
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
+
 
 class LoginPacienteActivity : AppCompatActivity() {
 
@@ -31,6 +34,7 @@ class LoginPacienteActivity : AppCompatActivity() {
         editSenha = findViewById(R.id.editSenhaMedico)
         btnEntrar = findViewById(R.id.btnEntrarMedico)
         btnEsqueciSenha = findViewById(R.id.btnEsqueciSenhaMedico)
+
 
         btnEntrar.setOnClickListener {
             val email = editEmail.text.toString().trim()

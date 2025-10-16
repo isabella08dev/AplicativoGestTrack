@@ -25,6 +25,8 @@
         <activity android:name=".paciente.ChatPacienteActivity" />
         <activity android:name=".paciente.MeuPerfilPacienteActivity" />
         <activity android:name=".paciente.MinhasNotasPacienteActivity" />
+        <activity android:name=".paciente.LoginPacienteActivity"/>
+        <activity android:name=".paciente.CadastroPacienteActivity"/>
 
     </application>
 
