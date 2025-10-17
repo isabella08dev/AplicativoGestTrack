@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.example.gesttrack.Medico.CadastroMedicoActivity
-import com.example.gesttrack.Medico.LoginMedicoActivity
+import com.example.gesttrack.medico.CadastroMedicoActivity
+import com.example.gesttrack.medico.LoginMedicoActivity
 
 class MedicoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

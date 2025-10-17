@@ -17,11 +17,11 @@ class CalendarioPacienteActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_paciente_calendario) // Troque pelo nome do seu arquivo XML
+        setContentView(R.layout.activity_paciente_calendario)
 
-        calendarView = findViewById(R.id.calendarView)
-        selectedDateText = findViewById(R.id.selectedDateText)
-        addButton = findViewById(R.id.addButton)
+        calendarView = findViewById(R.id.calendarViewPaciente)
+
+        addButton = findViewById(R.id.btnAddSintoma)
 
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             selectedDateInMillis = getDateInMillis(year, month, dayOfMonth)

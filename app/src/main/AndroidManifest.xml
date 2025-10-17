@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.gesttrack">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,15 +11,19 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.GestTrack">
+
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".MedicoActivity" />
+        <activity android:name=".PacienteActivity" />
+
 
         <activity android:name=".paciente.CalendarioPacienteActivity" />
         <activity android:name=".paciente.PrincipalPacienteActivity" />
@@ -27,6 +32,13 @@
         <activity android:name=".paciente.MinhasNotasPacienteActivity" />
         <activity android:name=".paciente.LoginPacienteActivity"/>
         <activity android:name=".paciente.CadastroPacienteActivity"/>
+
+
+        <activity android:name=".medico.LoginMedicoActivity"/>
+        <activity android:name=".medico.CalendarioMedicoActivity"/>
+        <activity android:name=".medico.PrincipalMedicoActivity"/>
+        <activity android:name=".medico.CadastroMedicoActivity"/>
+        <activity android:name=".medico.MeuPerfilMedicoActivity"/>
 
     </application>
 

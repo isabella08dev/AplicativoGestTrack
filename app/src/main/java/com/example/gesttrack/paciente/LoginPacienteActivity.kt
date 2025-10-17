@@ -7,17 +7,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.gesttrack.DatabaseHelper
 import com.example.gesttrack.R
-import com.example.gesttrack.SupabaseClient
-
-import io.github.jan.supabase.auth.auth
-import io.github.jan.supabase.auth.providers.builtin.Email
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-
-
 
 class LoginPacienteActivity : AppCompatActivity() {
 
@@ -35,113 +26,35 @@ class LoginPacienteActivity : AppCompatActivity() {
         btnEntrar = findViewById(R.id.btnEntrarMedico)
         btnEsqueciSenha = findViewById(R.id.btnEsqueciSenhaMedico)
 
-
         btnEntrar.setOnClickListener {
             val email = editEmail.text.toString().trim()
             val senha = editSenha.text.toString().trim()
 
-            // Validações locais
             when {
                 email.isEmpty() -> {
-                    Toast.makeText(this, "O campo email não pode estar vazio.", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
+                    Toast.makeText(this, "Digite o email!", Toast.LENGTH_SHORT).show()
                 }
-
                 !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
-                    Toast.makeText(this, "Digite um email válido.", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
+                    Toast.makeText(this, "Email inválido!", Toast.LENGTH_SHORT).show()
                 }
-
                 senha.isEmpty() -> {
-                    Toast.makeText(this, "O campo senha não pode estar vazio.", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
+                    Toast.makeText(this, "Digite a senha!", Toast.LENGTH_SHORT).show()
                 }
-
-                senha.length < 6 -> {
-                    Toast.makeText(this, "A senha deve ter pelo menos 6 caracteres.", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
                 else -> {
                     verificarLogin(email, senha)
                 }
             }
         }
-
-        btnEsqueciSenha.setOnClickListener {
-            enviarEmailRecuperacao()
-        }
     }
-
     private fun verificarLogin(email: String, senha: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                // Tenta autenticar o usuário com Supabase
-                SupabaseClient.client.auth.signInWith(Email) {
-                    this.email = email
-                    this.password = senha
-                }
-
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        this@LoginPacienteActivity,
-                        "Login realizado com sucesso!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    // Redireciona para tela principal
-                    startActivity(Intent(this@LoginPacienteActivity, PrincipalPacienteActivity::class.java))
+        DatabaseHelper.verificarLogin(email, senha) { valido, erro ->
+            runOnUiThread {
+                if (valido) {
+                    Toast.makeText(this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, PrincipalPacienteActivity::class.java))
                     finish()
-                }
-
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    // Caso o login falhe (usuário não cadastrado)
-                    Toast.makeText(
-                        this@LoginPacienteActivity,
-                        "Você não possui cadastro. Crie sua conta!",
-                        Toast.LENGTH_LONG
-                    ).show()
-
-                    val intent = Intent(this@LoginPacienteActivity, CadastroPacienteActivity::class.java)
-                    intent.putExtra("email_pre_preenchido", email)
-                    startActivity(intent)
-                    finish()
-                }
-            }
-        }
-    }
-
-    private fun enviarEmailRecuperacao() {
-        val email = editEmail.text.toString().trim()
-
-        if (email.isEmpty()) {
-            Toast.makeText(this, "Digite seu email para recuperar a senha.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(this, "Digite um email válido.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                SupabaseClient.client.auth.resetPasswordForEmail(email)
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        this@LoginPacienteActivity,
-                        "Email de recuperação enviado!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        this@LoginPacienteActivity,
-                        "Erro: ${e.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                } else {
+                    Toast.makeText(this, "Email ou senha incorretos!", Toast.LENGTH_LONG).show()
                 }
             }
         }

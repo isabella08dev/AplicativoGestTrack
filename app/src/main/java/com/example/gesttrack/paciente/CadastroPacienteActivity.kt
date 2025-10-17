@@ -7,18 +7,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.gesttrack.DatabaseHelper
 import com.example.gesttrack.R
-import com.example.gesttrack.SupabaseClient
-
-
-import io.github.jan.supabase.auth.auth
-import io.github.jan.supabase.auth.providers.builtin.Email
-import io.github.jan.supabase.postgrest.from
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.time.LocalDateTime
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class CadastroPacienteActivity : AppCompatActivity() {
 
@@ -35,7 +27,6 @@ class CadastroPacienteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_paciente_cadastro)
 
-        // Referência dos campos
         editNome = findViewById(R.id.editNomePaciente)
         editCPF = findViewById(R.id.editCPFPaciente)
         editRG = findViewById(R.id.editRGPaciente)
@@ -54,7 +45,6 @@ class CadastroPacienteActivity : AppCompatActivity() {
             val email = editEmail.text.toString().trim()
             val senha = editSenha.text.toString().trim()
 
-            // Validações básicas
             if (nome.isEmpty() || cpf.isEmpty() || rg.isEmpty() ||
                 dataNascimento.isEmpty() || telefone.isEmpty() ||
                 email.isEmpty() || senha.isEmpty()
@@ -73,7 +63,18 @@ class CadastroPacienteActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            cadastrarPaciente(nome, cpf, rg, dataNascimento, telefone, email, senha)
+            // 🔹 Converte a data de "dd/MM/yyyy" para "yyyy-MM-dd"
+            val dataFormatada = try {
+                val formatoEntrada = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val formatoSaida = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                val data = formatoEntrada.parse(dataNascimento)
+                formatoSaida.format(data!!)
+            } catch (e: Exception) {
+                Toast.makeText(this, "Data de nascimento inválida!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            cadastrarPaciente(nome, cpf, rg, dataFormatada, telefone, email, senha)
         }
     }
 
@@ -86,55 +87,16 @@ class CadastroPacienteActivity : AppCompatActivity() {
         email: String,
         senha: String
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
-            try {
-                val client = SupabaseClient.client
-
-
-                // 1. Registrar o usuário no Supabase Auth
-                val session = client.auth.signUpWith(Email) {
-                    this.email = email
-                    this.password = senha
-                }
-
-                // 2. Inserir os dados do paciente na tabela "Pacientes"
-                val data = mapOf(
-                    "nome" to nome,
-                    "cpf" to cpf,
-                    "rg" to rg,
-                    "data_nascimento" to dataNascimento,
-                    "telefone" to telefone,
-                    "email" to email,
-                    "senha" to senha, // Nota: A senha não deve ser salva em texto puro na tabela.
-                    // Se o Supabase Auth for usado, basta salvar o 'user_id'
-                    // da sessão na tabela do paciente.
-                    "data_criacao" to LocalDateTime.now().toString()
-                )
-
-                client.from("Pacientes").insert(data)
-
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        this@CadastroPacienteActivity,
-                        "Cadastro realizado com sucesso!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    val intent = Intent(
-                        this@CadastroPacienteActivity,
-                        PrincipalPacienteActivity::class.java
-                    )
-                    startActivity(intent)
+        DatabaseHelper.inserirPaciente(
+            nome, cpf, rg, dataNascimento, telefone, email, senha
+        ) { sucesso, erro ->
+            runOnUiThread {
+                if (sucesso) {
+                    Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, PrincipalPacienteActivity::class.java))
                     finish()
-                }
-
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        this@CadastroPacienteActivity,
-                        "Erro ao cadastrar: ${e.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                } else {
+                    Toast.makeText(this, "Erro: $erro", Toast.LENGTH_LONG).show()
                 }
             }
         }
