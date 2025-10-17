@@ -63,9 +63,8 @@ class CadastroPacienteActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // 🔹 Converte a data de "dd/MM/yyyy" para "yyyy-MM-dd"
             val dataFormatada = try {
-                val formatoEntrada = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val formatoEntrada = SimpleDateFormat("ddMMyyyy", Locale.getDefault())
                 val formatoSaida = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val data = formatoEntrada.parse(dataNascimento)
                 formatoSaida.format(data!!)

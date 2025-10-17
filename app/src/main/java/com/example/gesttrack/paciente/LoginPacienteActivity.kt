@@ -24,7 +24,7 @@ class LoginPacienteActivity : AppCompatActivity() {
         editEmail = findViewById(R.id.editEmailMedico)
         editSenha = findViewById(R.id.editSenhaMedico)
         btnEntrar = findViewById(R.id.btnEntrarMedico)
-        btnEsqueciSenha = findViewById(R.id.btnEsqueciSenhaMedico)
+
 
         btnEntrar.setOnClickListener {
             val email = editEmail.text.toString().trim()
