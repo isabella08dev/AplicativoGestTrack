@@ -13,7 +13,8 @@ import com.example.gesttrack.R
 class CadastroMedicoActivity : AppCompatActivity() {
 
     private lateinit var editNome: EditText
-    private lateinit var editCrm: EditText
+    private lateinit var editCRM: EditText
+    private lateinit var editSenha: EditText
     private lateinit var editTelefone: EditText
     private lateinit var editEmail: EditText
     private lateinit var btnCadastrar: Button
@@ -23,18 +24,20 @@ class CadastroMedicoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_medico_cadastro)
 
         editNome = findViewById(R.id.editNomeMedico)
-        editCrm = findViewById(R.id.editSenhaMedico)
+        editCRM = findViewById(R.id.editCRM)
+        editSenha = findViewById(R.id.editSenhaMedico)
         editTelefone = findViewById(R.id.editTelefoneMedico)
         editEmail = findViewById(R.id.editEmailMedico)
         btnCadastrar = findViewById(R.id.btnCadastrarMedico)
 
         btnCadastrar.setOnClickListener {
             val nome = editNome.text.toString().trim()
-            val crm = editCrm.text.toString().trim()
+            val crm = editCRM.text.toString().trim()
+            val senha = editSenha.text.toString().trim()
             val telefone = editTelefone.text.toString().trim()
             val email = editEmail.text.toString().trim()
 
-            if (nome.isEmpty() || crm.isEmpty() || telefone.isEmpty() || email.isEmpty()) {
+            if (nome.isEmpty() || crm.isEmpty() || senha.isEmpty() || telefone.isEmpty() || email.isEmpty()) {
                 Toast.makeText(this, "Preencha todos os campos!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -44,11 +47,25 @@ class CadastroMedicoActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            cadastrarMedico(nome, crm, telefone, email)
+            if (senha.length < 6) {
+                Toast.makeText(this, "A senha deve ter pelo menos 6 caracteres!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            cadastrarMedico(nome, crm, senha, telefone, email)
         }
     }
-    private fun cadastrarMedico(nome: String, crm: String, telefone: String, email: String) {
-        DatabaseHelper.inserirMedico(nome, crm, telefone, email) { sucesso, erro ->
+
+    private fun cadastrarMedico(
+        nome: String,
+        crm: String,
+        senha: String,
+        telefone: String,
+        email: String
+    ) {
+        DatabaseHelper.inserirMedico(
+            nome, crm, senha, telefone, email
+        ) { sucesso, erro ->
             runOnUiThread {
                 if (sucesso) {
                     Toast.makeText(this, "Cadastro realizado com sucesso!", Toast.LENGTH_SHORT).show()

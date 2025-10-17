@@ -129,6 +129,7 @@ object DatabaseHelper {
     fun inserirMedico(
         nome: String,
         crm: String,
+        senha: String,
         telefone: String,
         email: String,
         callback: (Boolean, String?) -> Unit
@@ -136,6 +137,7 @@ object DatabaseHelper {
         val json = JSONObject().apply {
             put("nome", nome)
             put("crm", crm)
+            put("senha", senha)
             put("telefone", telefone)
             put("email", email)
         }
@@ -146,6 +148,7 @@ object DatabaseHelper {
             .url("$SUPABASE_URL/rest/v1/medicos")
             .addHeader("apikey", SUPABASE_KEY)
             .addHeader("Authorization", "Bearer $SUPABASE_KEY")
+            .addHeader("Content-Type", "application/json")
             .post(body)
             .build()
 
@@ -155,16 +158,19 @@ object DatabaseHelper {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                val success = response.isSuccessful
                 val responseBody = response.body?.string()
-                callback(success, responseBody)
+                println("🔹 Código HTTP: ${response.code}")
+                println("🔹 Resposta Supabase: $responseBody")
+                callback(response.isSuccessful, responseBody)
             }
         })
     }
 
-    fun verificarLoginMedico(email: String, crm: String, callback: (Boolean, String?) -> Unit) {
+
+
+    fun verificarLoginMedico(email: String, senha: String, callback: (Boolean, String?) -> Unit) {
         val url =
-            "$SUPABASE_URL/rest/v1/medicos?email=eq.${email}&crm=eq.${crm}&select=id_medico"
+            "$SUPABASE_URL/rest/v1/medicos?email=eq.${email}&senha=eq.${senha}&select=id_medico"
 
         val request = Request.Builder()
             .url(url)
@@ -186,6 +192,43 @@ object DatabaseHelper {
                     callback(jsonArray.length() > 0, null)
                 } else {
                     callback(false, "Erro no servidor ou credenciais inválidas")
+                }
+            }
+        })
+    }
+
+    fun obterMedicoPorEmailESenha(email: String, senha: String, callback: (JSONObject?) -> Unit) {
+        val url =
+            "$SUPABASE_URL/rest/v1/medicos?email=eq.${email}&senha=eq.${senha}&select=*"
+
+        val request = Request.Builder()
+            .url(url)
+            .addHeader("apikey", SUPABASE_KEY)
+            .addHeader("Authorization", "Bearer $SUPABASE_KEY")
+            .addHeader("Content-Type", "application/json")
+            .get()
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                callback(null)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                if (response.isSuccessful && body != null) {
+                    try {
+                        val jsonArray = JSONArray(body)
+                        if (jsonArray.length() > 0) {
+                            callback(jsonArray.getJSONObject(0))
+                        } else {
+                            callback(null)
+                        }
+                    } catch (e: Exception) {
+                        callback(null)
+                    }
+                } else {
+                    callback(null)
                 }
             }
         })

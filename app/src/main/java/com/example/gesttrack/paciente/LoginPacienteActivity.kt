@@ -15,7 +15,7 @@ class LoginPacienteActivity : AppCompatActivity() {
     private lateinit var editEmail: EditText
     private lateinit var editSenha: EditText
     private lateinit var btnEntrar: Button
-    private lateinit var btnEsqueciSenha: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

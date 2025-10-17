@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gesttrack.R
 
-class MeuPerfilMedicoActivity: AppCompatActivity() {
+class MeusPacientesMedicoActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_medico_meuperfil)
+        setContentView(R.layout.activity_medico_meuspacientes)
     }
 }
