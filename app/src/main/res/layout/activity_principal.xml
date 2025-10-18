@@ -1,48 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/fundo_app"
-    android:padding="20dp">
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="24dp">
 
     <LinearLayout
-        android:id="@+id/containerLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="261dp"
+        android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:paddingTop="600dp"
+        android:paddingHorizontal="120dp">
 
+        <!-- Botão Sou Paciente -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSouPaciente"
-            android:layout_width="250dp"
-            android:layout_height="60dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:background="@drawable/botao_circular_azul"
-            android:stateListAnimator="@null"
+            android:background="@drawable/botao_circular_azul_principal"
+            android:paddingVertical="25dp"
             android:text="SOU PACIENTE"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
+            android:textSize="30sp"
             android:textStyle="bold"
-            android:theme="@style/ThemeOverlay.AppCompat"
-            app:backgroundTint="@null" />
+            android:stateListAnimator="@null"/>
 
+        <!-- Botão Sou Médico -->
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSouMedico"
-            android:layout_width="240dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/botao_circular_azul"
-            android:stateListAnimator="@null"
-            android:text="SOU MEDICO"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/botao_circular_azul_principal"
+            android:paddingVertical="25dp"
+            android:text="SOU MÉDICO"
             android:textColor="#FFFFFF"
-            android:textSize="19sp"
+            android:textSize="30sp"
             android:textStyle="bold"
-            android:theme="@style/ThemeOverlay.AppCompat"
-            app:backgroundTint="@null" />
+            android:stateListAnimator="@null"/>
 
     </LinearLayout>
-
-</RelativeLayout>
+</ScrollView>
