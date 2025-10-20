@@ -6,40 +6,50 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
+    <!-- CONTEÚDO PRINCIPAL -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/fundo_paciente">
+        android:background="@drawable/fundo_paciente"
+        android:paddingHorizontal="0dp"
+        android:paddingTop="0dp">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnUltimasMedicoes"
-            android:layout_width="320dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="148dp"
-            android:background="@drawable/botao_circular_azul"
-            android:stateListAnimator="@null"
-            android:text="Ver últimas medições"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+        <!-- Botão do menu no canto superior esquerdo -->
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/btnMenu"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_margin="20dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/menu_icon"
+            android:contentDescription="Abrir menu"
+            android:tint="@color/black"
+            android:clickable="true"
+            android:focusable="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Botão principal -->
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnUltimasMedicoes"
+            android:layout_width="450dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="180dp"
+            android:background="@drawable/botao_circular_azul_principal"
+            android:paddingVertical="25dp"
+            android:text="Ver últimas medições"
+            android:textColor="#FFFFFF"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:stateListAnimator="@null"
+            app:layout_constraintTop_toBottomOf="@id/btnMenu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+    <!-- MENU LATERAL -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="280dp"
@@ -48,7 +58,6 @@
         app:menu="@menu/menu_paciente"
         app:itemIconTint="@color/black"
         app:itemTextColor="@color/black"
-        android:background="@color/white"/>
-
+        android:background="@color/white" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
