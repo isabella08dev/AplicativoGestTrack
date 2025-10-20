@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:hint="Data de Nascimento"
-            android:inputType="date"
+            android:inputType="datetime"
             android:background="@drawable/botao_bege_borda_laranja"
             android:padding="25dp"
             android:textColor="#000000"

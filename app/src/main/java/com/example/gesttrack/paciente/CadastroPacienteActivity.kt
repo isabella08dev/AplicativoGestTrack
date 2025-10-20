@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gesttrack.DatabaseHelper
 import com.example.gesttrack.R
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -58,22 +59,64 @@ class CadastroPacienteActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            if (!validarCPF(cpf)) {
+                Toast.makeText(this, "CPF inválido!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (!validarDataNascimento(dataNascimento)) {
+                Toast.makeText(this, "Data de nascimento inválida! Use o formato dd/MM/yyyy", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             if (senha.length < 6) {
                 Toast.makeText(this, "A senha deve ter pelo menos 6 caracteres!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             val dataFormatada = try {
-                val formatoEntrada = SimpleDateFormat("ddMMyyyy", Locale.getDefault())
+                val formatoEntrada = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val formatoSaida = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val data = formatoEntrada.parse(dataNascimento)
                 formatoSaida.format(data!!)
             } catch (e: Exception) {
-                Toast.makeText(this, "Data de nascimento inválida!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Erro ao formatar a data!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             cadastrarPaciente(nome, cpf, rg, dataFormatada, telefone, email, senha)
+        }
+    }
+
+    // ---- Função para validar CPF ----
+    private fun validarCPF(cpf: String): Boolean {
+        val cleanCPF = cpf.replace(Regex("[^\\d]"), "")
+        if (cleanCPF.length != 11 || cleanCPF.all { it == cleanCPF[0] }) return false
+
+        try {
+            val numbers = cleanCPF.map { it.toString().toInt() }
+
+            val dig1 = ((0..8).sumOf { (10 - it) * numbers[it] } * 10 % 11) % 10
+            val dig2 = ((0..9).sumOf { (11 - it) * numbers[it] } * 10 % 11) % 10
+
+            return dig1 == numbers[9] && dig2 == numbers[10]
+        } catch (e: Exception) {
+            return false
+        }
+    }
+
+    // ---- Função para validar formato e data válida ----
+    private fun validarDataNascimento(data: String): Boolean {
+        val regex = Regex("^\\d{2}/\\d{2}/\\d{4}$")
+        if (!regex.matches(data)) return false
+
+        return try {
+            val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            sdf.isLenient = false
+            sdf.parse(data)
+            true
+        } catch (e: ParseException) {
+            false
         }
     }
 
