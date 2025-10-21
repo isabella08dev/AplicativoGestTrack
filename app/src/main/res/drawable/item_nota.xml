@@ -7,7 +7,7 @@
     android:layout_marginHorizontal="8dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp"
-    android:backgroundTint="@color/postit_yellow">
+    android:backgroundTint="@color/postit_amarelo">
 
     <RelativeLayout
         android:layout_width="match_parent"

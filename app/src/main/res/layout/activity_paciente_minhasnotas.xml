@@ -2,38 +2,128 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#FFF8DC"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#FFFDF8">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <!-- Cabeçalho simples -->
+    <TextView
+        android:id="@+id/tvTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Minhas Notas"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#2A2A2A" />
+
+    <TextView
+        android:id="@+id/tvSub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="O que voce está sentindo hoje?"
+        android:textSize="14sp"
+        android:textColor="#5F6B7A"
+        android:layout_marginTop="2dp" />
+
+    <!-- “Card” do input sem drawable, só Material e padding -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical">
+        android:layout_marginTop="12dp"
+        app:cardCornerRadius="18dp"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="6dp"
+        app:cardBackgroundColor="@android:color/transparent">
 
-        <EditText
-            android:id="@+id/etNovaNota"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Escreva sua nota..."
-            android:background="@drawable/postit_bg"
-            android:padding="10dp" />
+            android:background="@color/postit_verde">
 
-        <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Adicionar"
-            android:layout_marginStart="8dp"/>
-    </LinearLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+                app:boxStrokeColor="#003366"
+                app:hintTextColor="#003366"
+                android:hint="Escreva sua nota...">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNovaNota"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:minLines="2"
+                    android:maxLines="4"
+                    android:textColor="#1E293B"
+                    android:textColorHint="#8FA0B3" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <RadioGroup
+                android:id="@+id/rgCores"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <RadioButton
+                    android:id="@+id/rbCor1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Amarelo"
+                    android:buttonTint="#003366" />
+
+                <RadioButton
+                    android:id="@+id/rbCor2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Rosa"
+                    android:buttonTint="#003366" />
+
+                <RadioButton
+                    android:id="@+id/rbCor3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Azul"
+                    android:buttonTint="#003366" />
+
+                <RadioButton
+                    android:id="@+id/rbCor4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Verde"
+                    android:buttonTint="#003366" />
+            </RadioGroup>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:layout_marginStart="10dp"
+                android:minWidth="0dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:text="Adicionar"
+                android:textAllCaps="false"
+                app:backgroundTint="#FFF0E1"
+                android:textColor="#003366" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Lista -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvNotas"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="12dp"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="14dp"
+        android:clipToPadding="false"
+        android:paddingBottom="24dp"
+        android:fadingEdgeLength="8dp"
+        android:requiresFadingEdge="vertical" />
 
 </LinearLayout>
