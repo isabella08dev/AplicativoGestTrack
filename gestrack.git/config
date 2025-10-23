@@ -9,3 +9,4 @@
 	tagOpt = --no-tags
 	fetch = +refs/*:refs/*
 	mirror = true
+	pushurl = https://github.com/seu-usuario/gesttrack-mirror.git

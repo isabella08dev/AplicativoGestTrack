@@ -15,19 +15,17 @@ if (localPropertiesFile.exists()) {
 
 android {
     namespace = "com.example.gesttrack"
-    compileSdk = 36
+    compileSdk = 36 // ATUALIZADO para a versão exigida pelas dependências
 
     defaultConfig {
         applicationId = "com.example.gesttrack"
         minSdk = 26
-        targetSdk = 36
+        targetSdk = 34 // ATUALIZADO para a versão exigida pelas dependências
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val geminiKey = localProperties.getProperty("GEMINI_API_KEY")
-            ?: System.getenv("GEMINI_API_KEY") ?: ""
-        buildConfigField("String", "GEMINI_API_KEY", "\"$geminiKey\"")
+
     }
 
     buildTypes {
@@ -70,7 +68,5 @@ dependencies {
     // ⚠️ Só mantenha PostgreSQL se vc REALMENTE precisa no Android
     implementation("org.postgresql:postgresql:42.7.3")
 
-
-   // implementation("com.google.ai.client:generativeai:0.9.0")
-
+    // A dependência do Gemini foi REMOVIDA.
 }
