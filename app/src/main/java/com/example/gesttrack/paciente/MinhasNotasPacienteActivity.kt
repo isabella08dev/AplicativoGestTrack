@@ -1,24 +1,33 @@
 package com.example.gesttrack.paciente
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gesttrack.R
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.navigation.NavigationView
 import org.json.JSONArray
 import org.json.JSONObject
 
-// A data class agora tem um ID para nos ajudar a gerenciar as notas
 data class Nota(val id: Long, var texto: String, var cor: Int)
 
 class MinhasNotasPacienteActivity : AppCompatActivity() {
 
+    // Drawer
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
+    private lateinit var btnMenu: ImageButton
+
+    // Notas
     private lateinit var etNovaNota: EditText
     private lateinit var btnAdd: MaterialButton
     private lateinit var rvNotas: RecyclerView
@@ -31,6 +40,48 @@ class MinhasNotasPacienteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_paciente_minhasnotas)
 
+        // ===== Drawer =====
+        drawerLayout = findViewById(R.id.drawer_layout)
+        navigationView = findViewById(R.id.navigation_view)
+        btnMenu = findViewById(R.id.btnMenu)
+
+        btnMenu.setOnClickListener {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
+
+        // Lógica de navegação CORRIGIDA
+        navigationView.setNavigationItemSelectedListener { item ->
+            drawerLayout.closeDrawer(GravityCompat.START) // Fecha o menu ao clicar
+            when (item.itemId) {
+                R.id.nav_perfil -> {
+                    startActivity(Intent(this, MeuPerfilPacienteActivity::class.java))
+                    true
+                }
+                R.id.nav_calendario -> {
+                    startActivity(Intent(this, CalendarioPacienteActivity::class.java))
+                    true
+                }
+                R.id.nav_notas -> {
+                    // Já estamos aqui, não faz nada
+                    true
+                }
+                R.id.nav_chat -> {
+                    startActivity(Intent(this, ChatPacienteActivity::class.java))
+                    true
+                }
+                R.id.nav_voltar -> {
+                    finish() // Fecha esta tela e volta para a anterior
+                    true
+                }
+                else -> false
+            }
+        }
+
+        // ===== UI Notas =====
         etNovaNota = findViewById(R.id.etNovaNota)
         btnAdd = findViewById(R.id.btnAdd)
         rvNotas = findViewById(R.id.rvNotas)
@@ -42,15 +93,20 @@ class MinhasNotasPacienteActivity : AppCompatActivity() {
 
         setupColorSelection()
         setupAddButton()
-        
-        // Carrega as notas salvas no dispositivo
         carregarNotas()
     }
 
+    override fun onBackPressed() {
+        if (this::drawerLayout.isInitialized && drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     private fun setupColorSelection() {
-        // Define a cor padrão e o listener para o seletor de cores
         corSelecionada = ContextCompat.getColor(this, R.color.postit_amarelo)
-        rgCores.check(R.id.rbCor1) // Pre-seleciona o amarelo
+        rgCores.check(R.id.rbCor1)
 
         rgCores.setOnCheckedChangeListener { _, checkedId ->
             corSelecionada = when (checkedId) {
@@ -67,14 +123,11 @@ class MinhasNotasPacienteActivity : AppCompatActivity() {
         btnAdd.setOnClickListener {
             val texto = etNovaNota.text.toString().trim()
             if (texto.isNotEmpty()) {
-                // Usamos o tempo em milissegundos como um ID único para a nota
                 val novaNota = Nota(System.currentTimeMillis(), texto, corSelecionada)
                 listaNotas.add(0, novaNota)
                 notasAdapter.notifyItemInserted(0)
                 rvNotas.scrollToPosition(0)
                 etNovaNota.text.clear()
-                
-                // Salva a lista atualizada
                 salvarNotas()
             } else {
                 Toast.makeText(this, "Digite uma nota!", Toast.LENGTH_SHORT).show()
@@ -87,12 +140,13 @@ class MinhasNotasPacienteActivity : AppCompatActivity() {
         val editor = prefs.edit()
         val jsonArray = JSONArray()
         listaNotas.forEach { nota ->
-            val jsonObject = JSONObject().apply {
-                put("id", nota.id)
-                put("texto", nota.texto)
-                put("cor", nota.cor)
-            }
-            jsonArray.put(jsonObject)
+            jsonArray.put(
+                JSONObject().apply {
+                    put("id", nota.id)
+                    put("texto", nota.texto)
+                    put("cor", nota.cor)
+                }
+            )
         }
         editor.putString("lista_notas", jsonArray.toString())
         editor.apply()
@@ -100,21 +154,23 @@ class MinhasNotasPacienteActivity : AppCompatActivity() {
 
     private fun carregarNotas() {
         val prefs = getSharedPreferences("GestTrackNotas", Context.MODE_PRIVATE)
-        val jsonString = prefs.getString("lista_notas", null)
-
-        if (jsonString != null) {
+        val jsonString = prefs.getString("lista_notas", null) ?: return
+        try {
             val jsonArray = JSONArray(jsonString)
             for (i in 0 until jsonArray.length()) {
-                val jsonObject = jsonArray.getJSONObject(i)
-                val nota = Nota(
-                    jsonObject.getLong("id"),
-                    jsonObject.getString("texto"),
-                    jsonObject.getInt("cor")
+                val obj = jsonArray.getJSONObject(i)
+                listaNotas.add(
+                    Nota(
+                        obj.getLong("id"),
+                        obj.getString("texto"),
+                        obj.getInt("cor")
+                    )
                 )
-                listaNotas.add(nota)
             }
+            notasAdapter.notifyDataSetChanged()
+        } catch (e: Exception) {
+            getSharedPreferences("GestTrackNotas", Context.MODE_PRIVATE).edit().clear().apply()
         }
-        notasAdapter.notifyDataSetChanged()
     }
 
     inner class NotasAdapter(private val notas: MutableList<Nota>) :
@@ -137,7 +193,7 @@ class MinhasNotasPacienteActivity : AppCompatActivity() {
             holder.tvNota.text = nota.texto
             holder.cardView.setCardBackgroundColor(nota.cor)
 
-            holder.btnEditar.setOnClickListener { 
+            holder.btnEditar.setOnClickListener {
                 val pos = holder.bindingAdapterPosition
                 if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
 
@@ -154,7 +210,6 @@ class MinhasNotasPacienteActivity : AppCompatActivity() {
                         if (novoTexto.isNotEmpty()) {
                             notas[pos].texto = novoTexto
                             notifyItemChanged(pos)
-                            // Salva após editar
                             salvarNotas()
                         }
                     }
@@ -169,7 +224,6 @@ class MinhasNotasPacienteActivity : AppCompatActivity() {
                 notas.removeAt(pos)
                 notifyItemRemoved(pos)
                 notifyItemRangeChanged(pos, notas.size - pos)
-                // Salva após deletar
                 salvarNotas()
             }
         }

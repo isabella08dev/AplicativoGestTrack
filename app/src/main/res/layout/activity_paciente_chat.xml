@@ -1,64 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fundo_paciente_chatia">
+    tools:context=".paciente.ChatPacienteActivity">
 
-    <!-- Lista do chat -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/chatRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="530dp"
-        android:layout_above="@+id/bottomLayout"
-        android:clipToPadding="false"
-        android:paddingStart="12dp"
-        android:paddingTop="12dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="12dp" />
-
-    <!-- Barra inferior -->
+    <!-- Conteúdo Principal da Tela de Chat -->
     <RelativeLayout
-        android:id="@+id/bottomLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:padding="10dp">
+        android:layout_height="match_parent"
+        android:background="@drawable/fundo_paciente_chatia">
 
-        <EditText
-            android:id="@+id/messageEditText"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chatRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_toStartOf="@+id/sendButton"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp"
-            android:hint="Digite sua mensagem..."
-            android:paddingStart="14dp"
-            android:paddingEnd="14dp"
-            android:background="@android:color/transparent"
-            android:drawablePadding="8dp"
-            android:elevation="2dp"
-            android:backgroundTint="@android:color/transparent"
-            android:gravity="center_vertical"
-            android:importantForAutofill="no"
-            android:inputType="textCapSentences|textMultiLine"
-            android:maxLines="3"
-            android:minHeight="48dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:textColor="@android:color/black"
-            android:textColorHint="#66000000" />
+            android:layout_height="match_parent"
+            android:layout_above="@+id/bottomLayout"
+            android:clipToPadding="false"
+            android:padding="8dp" />
 
+        <RelativeLayout
+            android:id="@+id/bottomLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:padding="8dp">
+
+            <EditText
+                android:id="@+id/messageEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/sendButton"
+                android:background="@drawable/edit_text_background"
+                android:hint="Digite sua mensagem..."
+                android:padding="14dp"
+                android:layout_marginEnd="8dp"/>
+
+            <ImageButton
+                android:id="@+id/sendButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@android:drawable/ic_menu_send"
+                android:backgroundTint="@color/postit_verde_menta"
+                android:contentDescription="Enviar" />
+
+        </RelativeLayout>
+
+        <!-- Botão do Menu Hambúrguer -->
         <ImageButton
-            android:id="@+id/sendButton"
+            android:id="@+id/btnMenu"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:background="@android:color/transparent"
-            android:contentDescription="Enviar"
-            android:src="@android:drawable/ic_menu_send"
-            android:tint="@color/postit_verde_menta" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/menu_icon" 
+            app:tint="@android:color/black" 
+            android:contentDescription="Abrir Menu"/>
+
     </RelativeLayout>
 
-</RelativeLayout>
+    <!-- Menu Lateral (NavigationView) -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/menu_paciente" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

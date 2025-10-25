@@ -1,6 +1,7 @@
 package com.example.gesttrack.paciente
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +12,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gesttrack.R
+import com.google.android.material.navigation.NavigationView
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -23,8 +27,14 @@ import java.io.IOException
 
 class ChatPacienteActivity : AppCompatActivity() {
 
+    // Drawer
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
+    private lateinit var btnMenu: ImageButton
+
+    // Chat
     private val client = OkHttpClient()
-    private val apiKey = "AIzaSyCJcL9GebaG9u9tB7vm8f97B-aThVJBEJg"
+    private val apiKey = "AIzaSyCJcL9GebaG9u9tB7vm8f97B-aThVJBEJg" // ATENÇÃO: Chave exposta!
 
     private lateinit var sendButton: ImageButton
     private lateinit var promptInput: EditText
@@ -45,7 +55,47 @@ class ChatPacienteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_paciente_chat)
 
-        // 🔹 identifica qual aba de chat está aberta
+        // ===== Drawer =====
+        drawerLayout = findViewById(R.id.drawer_layout)
+        navigationView = findViewById(R.id.navigation_view)
+        btnMenu = findViewById(R.id.btnMenu)
+
+        btnMenu.setOnClickListener {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
+
+        navigationView.setNavigationItemSelectedListener { item ->
+            drawerLayout.closeDrawer(GravityCompat.START)
+            when (item.itemId) {
+                R.id.nav_perfil -> {
+                    startActivity(Intent(this, MeuPerfilPacienteActivity::class.java))
+                    true
+                }
+                R.id.nav_calendario -> {
+                    startActivity(Intent(this, CalendarioPacienteActivity::class.java))
+                    true
+                }
+                R.id.nav_notas -> {
+                    startActivity(Intent(this, MinhasNotasPacienteActivity::class.java))
+                    true
+                }
+                R.id.nav_chat -> {
+                    // Já estamos aqui, não faz nada
+                    true
+                }
+                R.id.nav_voltar -> {
+                    finish()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        // ===== Chat =====
         chatId = intent.getStringExtra("CHAT_ID") ?: "default"
 
         sendButton = findViewById(R.id.sendButton)
@@ -78,6 +128,14 @@ class ChatPacienteActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        if (this::drawerLayout.isInitialized && drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
     private fun addMensagem(msg: Mensagem) {
         mensagens.add(msg)
         chatAdapter.notifyItemInserted(mensagens.size - 1)
@@ -93,7 +151,6 @@ class ChatPacienteActivity : AppCompatActivity() {
         }
     }
 
-    // 🔹 Salva histórico por aba
     private fun salvarHistorico() {
         val prefs = getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         val arr = JSONArray()
@@ -106,7 +163,6 @@ class ChatPacienteActivity : AppCompatActivity() {
         prefs.edit().putString("${PREFS_KEY_HISTORICO}_$chatId", arr.toString()).apply()
     }
 
-    // 🔹 Carrega histórico por aba
     private fun carregarHistorico() {
         val prefs = getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         val salvo = prefs.getString("${PREFS_KEY_HISTORICO}_$chatId", null) ?: return
@@ -119,24 +175,16 @@ class ChatPacienteActivity : AppCompatActivity() {
         chatRecyclerView.scrollToPosition(mensagens.size - 1)
     }
 
-    // 🔹 Salva resumo por aba
     private fun salvarResumoAutomatico() {
-        val resumoPrompt =
-            "Resuma em poucas linhas apenas as informações importantes da paciente (nome, semanas de gestação, principais preocupações)."
-        val endpoint =
-            "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=$apiKey"
+        val resumoPrompt = "Resuma em poucas linhas apenas as informações importantes da paciente (nome, semanas de gestação, principais preocupações)."
+        val endpoint = "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=$apiKey"
 
         val mediaType = "application/json; charset=utf-8".toMediaType()
         val contents = JSONArray()
-        contents.put(JSONObject().put("role", "user")
-            .put("parts", JSONArray().put(JSONObject().put("text", resumoPrompt)))
-        )
+        contents.put(JSONObject().put("role", "user").put("parts", JSONArray().put(JSONObject().put("text", resumoPrompt))))
         for (m in mensagens) {
             if (!m.isUser && m.texto == "Pensando...") continue
-            contents.put(JSONObject()
-                .put("role", if (m.isUser) "user" else "model")
-                .put("parts", JSONArray().put(JSONObject().put("text", m.texto)))
-            )
+            contents.put(JSONObject().put("role", if (m.isUser) "user" else "model").put("parts", JSONArray().put(JSONObject().put("text", m.texto))))
         }
         val body = JSONObject().apply { put("contents", contents) }
         val requestBody = body.toString().toRequestBody(mediaType)
@@ -149,46 +197,31 @@ class ChatPacienteActivity : AppCompatActivity() {
                 if (!response.isSuccessful || raw.isNullOrBlank()) return
                 try {
                     val json = JSONObject(raw)
-                    val resumo = json.getJSONArray("candidates")
-                        .getJSONObject(0)
-                        .getJSONObject("content")
-                        .getJSONArray("parts")
-                        .getJSONObject(0)
-                        .getString("text")
-                    getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-                        .edit().putString("${PREFS_KEY_RESUMO}_$chatId", resumo).apply()
+                    val resumo = json.getJSONArray("candidates").getJSONObject(0).getJSONObject("content").getJSONArray("parts").getJSONObject(0).getString("text")
+                    getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putString("${PREFS_KEY_RESUMO}_$chatId", resumo).apply()
                 } catch (_: Exception) {}
             }
         })
     }
 
     private fun enviarPerguntaGemini(callback: (String) -> Unit) {
-        val endpoint =
-            "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=$apiKey"
+        val endpoint = "https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=$apiKey"
         val mediaType = "application/json; charset=utf-8".toMediaType()
         val contents = JSONArray()
 
         if (!contextoEnviado) {
-            val resumoSalvo = getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-                .getString("${PREFS_KEY_RESUMO}_$chatId", null)
-            var textoContexto =
-                "Você irá se apresentar como AURA (Assistente Unificado de Recomendações e Apoio) apenas na primeira mensagem. " +
-                        "Você é um assistente focado em ajudar gestantes no período gestacional (suporte emocional, autocuidado, dilatação, cuidados com o feto)."
+            val resumoSalvo = getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString("${PREFS_KEY_RESUMO}_$chatId", null)
+            var textoContexto = "Você irá se apresentar como AURA (Assistente Unificado de Recomendações e Apoio) apenas na primeira mensagem. Você é um assistente focado em ajudar gestantes no período gestacional (suporte emocional, autocuidado, dilatação, cuidados com o feto)."
             if (!resumoSalvo.isNullOrEmpty()) {
                 textoContexto += "\nResumo anterior desta paciente: $resumoSalvo"
             }
-            contents.put(JSONObject().put("role", "user")
-                .put("parts", JSONArray().put(JSONObject().put("text", textoContexto)))
-            )
+            contents.put(JSONObject().put("role", "user").put("parts", JSONArray().put(JSONObject().put("text", textoContexto))))
             contextoEnviado = true
         }
 
         for (m in mensagens) {
             if (!m.isUser && m.texto == "Pensando...") continue
-            contents.put(JSONObject()
-                .put("role", if (m.isUser) "user" else "model")
-                .put("parts", JSONArray().put(JSONObject().put("text", m.texto)))
-            )
+            contents.put(JSONObject().put("role", if (m.isUser) "user" else "model").put("parts", JSONArray().put(JSONObject().put("text", m.texto))))
         }
 
         val body = JSONObject().apply { put("contents", contents) }
@@ -207,12 +240,7 @@ class ChatPacienteActivity : AppCompatActivity() {
                 }
                 try {
                     val json = JSONObject(raw)
-                    val text = json.getJSONArray("candidates")
-                        .getJSONObject(0)
-                        .getJSONObject("content")
-                        .getJSONArray("parts")
-                        .getJSONObject(0)
-                        .getString("text")
+                    val text = json.getJSONArray("candidates").getJSONObject(0).getJSONObject("content").getJSONArray("parts").getJSONObject(0).getString("text")
                     callback(text)
                 } catch (e: Exception) {
                     callback("Erro parsing JSON: ${e.message}")
@@ -221,18 +249,10 @@ class ChatPacienteActivity : AppCompatActivity() {
         })
     }
 
-    // ---------------- MODELO ----------------
     data class Mensagem(val texto: String, val isUser: Boolean)
 
-    // ---------------- ADAPTER ----------------
-    class ChatAdapter(private val mensagens: List<Mensagem>) :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-        companion object {
-            const val TYPE_USER = 1
-            const val TYPE_BOT = 2
-        }
-
+    class ChatAdapter(private val mensagens: List<Mensagem>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+        companion object { const val TYPE_USER = 1; const val TYPE_BOT = 2; }
         private val boldRegex = Regex("\\*\\*(.+?)\\*\\*")
         private val italicRegex = Regex("(?<!\\*)\\*(?!\\*)(.+?)(?<!\\*)\\*(?!\\*)")
 
