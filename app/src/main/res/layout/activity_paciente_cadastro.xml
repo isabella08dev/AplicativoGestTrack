@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:background="@drawable/botao_bege_borda_laranja"
+            android:background="@drawable/botao_bege_borda_azul"
             android:hint="Nome"
             android:padding="25dp"
             android:textColor="#000000"
@@ -32,7 +32,7 @@
             android:layout_marginTop="25dp"
             android:hint="CPF"
             android:inputType="number"
-            android:background="@drawable/botao_bege_borda_laranja"
+            android:background="@drawable/botao_bege_borda_azul"
             android:padding="25dp"
             android:textColor="#000000"
             android:textSize="18sp"/>
@@ -45,7 +45,7 @@
             android:layout_marginTop="25dp"
             android:hint="RG"
             android:inputType="number"
-            android:background="@drawable/botao_bege_borda_laranja"
+            android:background="@drawable/botao_bege_borda_azul"
             android:padding="25dp"
             android:textColor="#000000"
             android:textSize="18sp"/>
@@ -58,7 +58,7 @@
             android:layout_marginTop="25dp"
             android:hint="Data de Nascimento"
             android:inputType="datetime"
-            android:background="@drawable/botao_bege_borda_laranja"
+            android:background="@drawable/botao_bege_borda_azul"
             android:padding="25dp"
             android:textColor="#000000"
             android:textSize="18sp"/>
@@ -71,7 +71,7 @@
             android:layout_marginTop="25dp"
             android:hint="Telefone"
             android:inputType="phone"
-            android:background="@drawable/botao_bege_borda_laranja"
+            android:background="@drawable/botao_bege_borda_azul"
             android:padding="25dp"
             android:textColor="#000000"
             android:textSize="18sp"/>
@@ -84,7 +84,7 @@
             android:layout_marginTop="25dp"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            android:background="@drawable/botao_bege_borda_laranja"
+            android:background="@drawable/botao_bege_borda_azul"
             android:padding="25dp"
             android:textColor="#000000"
             android:textSize="18sp"/>
@@ -97,7 +97,7 @@
             android:layout_marginTop="25dp"
             android:hint="Senha"
             android:inputType="textPassword"
-            android:background="@drawable/botao_bege_borda_laranja"
+            android:background="@drawable/botao_bege_borda_azul"
             android:padding="25dp"
             android:textColor="#000000"
             android:textSize="18sp"/>
@@ -108,7 +108,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="65dp"
-            android:background="@drawable/botao_circular_laranja"
+            android:background="@drawable/botao_circular_azul"
             android:paddingVertical="25dp"
             android:text="Cadastrar"
             android:textColor="#FFFFFF"

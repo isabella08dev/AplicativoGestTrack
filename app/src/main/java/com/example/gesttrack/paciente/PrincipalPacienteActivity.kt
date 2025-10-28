@@ -25,43 +25,37 @@ class PrincipalPacienteActivity : AppCompatActivity() {
 
 
         btnMenu.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
         }
 
-
-        navView.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.nav_perfil -> startActivity(
-                    Intent(
-                        this,
-                        MeuPerfilPacienteActivity::class.java
-                    )
-                )
-
-                R.id.nav_calendario -> startActivity(
-                    Intent(
-                        this,
-                        CalendarioPacienteActivity::class.java
-                    )
-                )
-
-                R.id.nav_notas -> startActivity(
-                    Intent(
-                        this,
-                        MinhasNotasPacienteActivity::class.java
-                    )
-                )
-
-                R.id.nav_chat -> startActivity(Intent(this, ChatPacienteActivity::class.java))
-                R.id.nav_voltar -> startActivity(
-                    Intent(
-                        this,
-                        PrincipalPacienteActivity::class.java
-                    )
-                )
-            }
+        navView.setNavigationItemSelectedListener { item ->
             drawerLayout.closeDrawer(GravityCompat.START)
-            true
+            when (item.itemId) {
+                R.id.nav_perfil -> {
+                    startActivity(Intent(this, MeuPerfilPacienteActivity::class.java))
+                    true
+                }
+                R.id.nav_calendario -> {
+                    startActivity(Intent(this, CalendarioPacienteActivity::class.java))
+                    true
+                }
+                R.id.nav_notas -> {
+                    startActivity(Intent(this, MinhasNotasPacienteActivity::class.java))
+                    true
+                }
+                R.id.nav_chat -> {
+                    startActivity(Intent(this, ChatPacienteActivity::class.java))
+                    true
+                }
+                R.id.nav_voltar -> {
+                    true
+                }
+                else -> false
+            }
         }
     }
 }

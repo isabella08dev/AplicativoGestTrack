@@ -84,11 +84,11 @@ class ChatPacienteActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_chat -> {
-                    // Já estamos aqui, não faz nada
+
                     true
                 }
                 R.id.nav_voltar -> {
-                    finish()
+                    startActivity(Intent(this, PrincipalPacienteActivity::class.java))
                     true
                 }
                 else -> false

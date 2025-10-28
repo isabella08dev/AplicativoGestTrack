@@ -11,20 +11,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/fundo_paciente"
-        android:paddingHorizontal="0dp"
-        android:paddingTop="0dp">
+        android:padding="0dp">
 
-        <!-- Botão do menu no canto superior esquerdo -->
-        <androidx.appcompat.widget.AppCompatImageButton
+        <!-- Botão do menu (canto superior esquerdo) -->
+        <ImageButton
             android:id="@+id/btnMenu"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/menu_icon"
+            app:tint="@android:color/black"
             android:contentDescription="Abrir menu"
-            android:tint="@color/black"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,15 +48,15 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- MENU LATERAL -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
-        android:layout_width="280dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header"
         app:menu="@menu/menu_paciente"
+        android:background="@color/white"
         app:itemIconTint="@color/black"
-        app:itemTextColor="@color/black"
-        android:background="@color/white" />
+        app:itemTextColor="@color/black" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

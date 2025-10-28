@@ -34,25 +34,51 @@ class LoginPacienteActivity : AppCompatActivity() {
                 email.isEmpty() -> {
                     Toast.makeText(this, "Digite o email!", Toast.LENGTH_SHORT).show()
                 }
+
                 !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
                     Toast.makeText(this, "Email inválido!", Toast.LENGTH_SHORT).show()
                 }
+
                 senha.isEmpty() -> {
                     Toast.makeText(this, "Digite a senha!", Toast.LENGTH_SHORT).show()
                 }
+
                 else -> {
                     verificarLogin(email, senha)
                 }
             }
         }
     }
+
     private fun verificarLogin(email: String, senha: String) {
-        DatabaseHelper.verificarLogin(email, senha) { valido, erro ->
+        DatabaseHelper.obterPacientePorEmailESenha(email, senha) { pacienteJson ->
             runOnUiThread {
-                if (valido) {
-                    Toast.makeText(this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, PrincipalPacienteActivity::class.java))
-                    finish()
+                if (pacienteJson != null) {
+                    // 🔥 MUDE DE optInt para optString
+                    val pacienteId = pacienteJson.optString("id_paciente", "")
+
+                    println("📍 JSON recebido: $pacienteJson")
+                    println("📍 ID extraído: $pacienteId")
+
+                    if (pacienteId.isNotEmpty()) {
+                        val sharedPref = getSharedPreferences("usuario_prefs", MODE_PRIVATE)
+                        with(sharedPref.edit()) {
+                            putString("id_paciente", pacienteId) // 🔥 putString ao invés de putInt
+                            commit()
+                        }
+
+                        val idSalvo = sharedPref.getString("id_paciente", "")
+                        println("📍 ID salvo no SharedPrefs: $idSalvo")
+
+                        Toast.makeText(this, "Login realizado com sucesso!", Toast.LENGTH_SHORT)
+                            .show()
+                        val intent = Intent(this, PrincipalPacienteActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(this, "Erro ao obter ID do paciente.", Toast.LENGTH_LONG)
+                            .show()
+                    }
                 } else {
                     Toast.makeText(this, "Email ou senha incorretos!", Toast.LENGTH_LONG).show()
                 }
@@ -60,3 +86,5 @@ class LoginPacienteActivity : AppCompatActivity() {
         }
     }
 }
+
+

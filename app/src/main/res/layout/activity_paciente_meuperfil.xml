@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
@@ -7,37 +8,156 @@
     android:layout_height="match_parent"
     tools:context=".paciente.MeuPerfilPacienteActivity">
 
-    <!-- Conteúdo Principal -->
-    <RelativeLayout
+    <!-- CONTEÚDO PRINCIPAL -->
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/fundo_perfil"
-        android:padding="20dp">
+        android:background="@drawable/fundo_liso"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="24dp">
 
-        <!-- O conteúdo da sua tela de perfil vai aqui -->
-        <!-- Exemplo: -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingTop="240dp"
+            android:paddingHorizontal="50dp">
 
-        <!-- Botão do Menu Hambúrguer -->
-        <ImageButton
-            android:id="@+id/btnMenu"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/menu_icon"
-            app:tint="@android:color/black"
-            android:contentDescription="Abrir Menu"/>
+            <!-- Botão do Menu -->
+            <ImageButton
+                android:id="@+id/btnMenu"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="16dp"
+                android:layout_gravity="start"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/menu_icon"
+                app:tint="@android:color/black"
+                android:contentDescription="Abrir menu" />
 
-    </RelativeLayout>
+            <!-- Título -->
+            <TextView
+                android:id="@+id/tvTitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meu Perfil"
+                android:textColor="#000000"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="32dp"/>
 
-    <!-- Menu Lateral (NavigationView) -->
+            <!-- Campos Editáveis -->
+            <EditText
+                android:id="@+id/editNomePaciente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/botao_bege_borda_laranja"
+                android:hint="Nome"
+                android:padding="25dp"
+                android:textColor="#000000"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editCPFPaciente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:hint="CPF"
+                android:inputType="number"
+                android:background="@drawable/botao_bege_borda_laranja"
+                android:padding="25dp"
+                android:textColor="#000000"
+                android:textSize="18sp"/>
+            <EditText
+                android:id="@+id/editRGPaciente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:hint="RG"
+                android:inputType="number"
+                android:background="@drawable/botao_bege_borda_laranja"
+                android:padding="25dp"
+                android:textColor="#000000"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editEmailPaciente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:hint="E-mail"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/botao_bege_borda_laranja"
+                android:padding="25dp"
+                android:textColor="#000000"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editSenhaPaciente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:hint="Senha"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/botao_bege_borda_laranja"
+                android:padding="25dp"
+                android:textColor="#000000"
+                android:textSize="18sp"/>
+
+
+            <EditText
+                android:id="@+id/editTelefonePaciente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:hint="Telefone"
+                android:inputType="phone"
+                android:background="@drawable/botao_bege_borda_laranja"
+                android:padding="25dp"
+                android:textColor="#000000"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editDataNascimentoPaciente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:hint="Data de Nascimento"
+                android:inputType="date"
+                android:background="@drawable/botao_bege_borda_laranja"
+                android:padding="25dp"
+                android:textColor="#000000"
+                android:textSize="18sp"/>
+
+            <!-- Botão de Atualizar -->
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnAtualizarPaciente"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="65dp"
+                android:background="@drawable/botao_circular_laranja"
+                android:paddingVertical="25dp"
+                android:text="Atualizar Dados"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:stateListAnimator="@null" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- MENU LATERAL -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/menu_paciente" />
+        app:menu="@menu/menu_paciente"
+        android:background="@color/white"
+        app:itemTextColor="@color/black"
+        app:itemIconTint="@color/black" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
