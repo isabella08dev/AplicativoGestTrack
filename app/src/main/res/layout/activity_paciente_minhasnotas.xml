@@ -20,11 +20,22 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/menu_icon"
             android:contentDescription="Abrir menu"
-            android:tint="@color/black" />
+            app:tint="#badbd2" />
+
+        <!-- Ícone acima do título -->
+        <ImageView
+            android:id="@+id/iconNotas"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/nota"
+            android:contentDescription="Ícone das notas"
+            app:tint="#badbd2" />
 
         <!-- Cabeçalho simples -->
         <TextView
@@ -42,7 +53,7 @@
             android:id="@+id/tvSub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="O que voce está sentindo hoje?"
+            android:text="O que você está sentindo hoje?"
             android:textSize="14sp"
             android:textColor="#5F6B7A"
             android:layout_marginTop="2dp"

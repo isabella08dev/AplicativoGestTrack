@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:paddingTop="240dp"
+            android:paddingTop="10dp"
             android:paddingHorizontal="50dp">
 
             <!-- Botão do Menu -->
@@ -29,12 +29,22 @@
                 android:id="@+id/btnMenu"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="10dp"
                 android:layout_gravity="start"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/menu_icon"
-                app:tint="@android:color/black"
+                app:tint="#badbd2"
                 android:contentDescription="Abrir menu" />
+
+            <!-- Ícone de Perfil -->
+            <ImageView
+                android:id="@+id/imgPerfil"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/perfil_icon"/> <!-- coloque aqui o nome do seu ícone -->
+
 
             <!-- Título -->
             <TextView
@@ -53,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/botao_bege_borda_laranja"
+                android:background="@drawable/botao_bege_borda_azul"
                 android:hint="Nome"
                 android:padding="25dp"
                 android:textColor="#000000"
@@ -66,10 +76,11 @@
                 android:layout_marginTop="20dp"
                 android:hint="CPF"
                 android:inputType="number"
-                android:background="@drawable/botao_bege_borda_laranja"
+                android:background="@drawable/botao_bege_borda_azul"
                 android:padding="25dp"
                 android:textColor="#000000"
                 android:textSize="18sp"/>
+
             <EditText
                 android:id="@+id/editRGPaciente"
                 android:layout_width="match_parent"
@@ -77,7 +88,7 @@
                 android:layout_marginTop="20dp"
                 android:hint="RG"
                 android:inputType="number"
-                android:background="@drawable/botao_bege_borda_laranja"
+                android:background="@drawable/botao_bege_borda_azul"
                 android:padding="25dp"
                 android:textColor="#000000"
                 android:textSize="18sp"/>
@@ -89,7 +100,7 @@
                 android:layout_marginTop="20dp"
                 android:hint="E-mail"
                 android:inputType="textEmailAddress"
-                android:background="@drawable/botao_bege_borda_laranja"
+                android:background="@drawable/botao_bege_borda_azul"
                 android:padding="25dp"
                 android:textColor="#000000"
                 android:textSize="18sp"/>
@@ -100,12 +111,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:hint="Senha"
-                android:inputType="textEmailAddress"
-                android:background="@drawable/botao_bege_borda_laranja"
+                android:inputType="textPassword"
+                android:background="@drawable/botao_bege_borda_azul"
                 android:padding="25dp"
                 android:textColor="#000000"
                 android:textSize="18sp"/>
-
 
             <EditText
                 android:id="@+id/editTelefonePaciente"
@@ -114,7 +124,7 @@
                 android:layout_marginTop="20dp"
                 android:hint="Telefone"
                 android:inputType="phone"
-                android:background="@drawable/botao_bege_borda_laranja"
+                android:background="@drawable/botao_bege_borda_azul"
                 android:padding="25dp"
                 android:textColor="#000000"
                 android:textSize="18sp"/>
@@ -126,18 +136,17 @@
                 android:layout_marginTop="20dp"
                 android:hint="Data de Nascimento"
                 android:inputType="date"
-                android:background="@drawable/botao_bege_borda_laranja"
+                android:background="@drawable/botao_bege_borda_azul"
                 android:padding="25dp"
                 android:textColor="#000000"
                 android:textSize="18sp"/>
 
-            <!-- Botão de Atualizar -->
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnAtualizarPaciente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="65dp"
-                android:background="@drawable/botao_circular_laranja"
+                android:background="@drawable/botao_circular_azul"
                 android:paddingVertical="25dp"
                 android:text="Atualizar Dados"
                 android:textColor="#FFFFFF"

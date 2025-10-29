@@ -55,7 +55,7 @@ class MinhasNotasPacienteActivity : AppCompatActivity() {
 
         // Lógica de navegação CORRIGIDA
         navigationView.setNavigationItemSelectedListener { item ->
-            drawerLayout.closeDrawer(GravityCompat.START) // Fecha o menu ao clicar
+            drawerLayout.closeDrawer(GravityCompat.START)
             when (item.itemId) {
                 R.id.nav_perfil -> {
                     startActivity(Intent(this, MeuPerfilPacienteActivity::class.java))
@@ -66,7 +66,6 @@ class MinhasNotasPacienteActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_notas -> {
-                    // Já estamos aqui, não faz nada
                     true
                 }
                 R.id.nav_chat -> {
@@ -74,7 +73,7 @@ class MinhasNotasPacienteActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_voltar -> {
-                    finish() // Fecha esta tela e volta para a anterior
+                    startActivity(Intent(this, PrincipalPacienteActivity::class.java))
                     true
                 }
                 else -> false
