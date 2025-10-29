@@ -21,9 +21,9 @@ class LoginPacienteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_paciente_login)
 
-        editEmail = findViewById(R.id.editEmailMedico)
-        editSenha = findViewById(R.id.editSenhaMedico)
-        btnEntrar = findViewById(R.id.btnEntrarMedico)
+        editEmail = findViewById(R.id.editEmailPaciente)
+        editSenha = findViewById(R.id.editSenhaPaciente)
+        btnEntrar = findViewById(R.id.btnEntrarPaciente)
 
 
         btnEntrar.setOnClickListener {

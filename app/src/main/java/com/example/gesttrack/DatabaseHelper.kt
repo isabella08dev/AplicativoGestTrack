@@ -274,4 +274,44 @@ object DatabaseHelper {
             }
         })
     }
+    fun obterMedicoPorId(
+        medicoId: String,
+        callback: (JSONObject?) -> Unit
+    ) { // 🔥 String ao invés de Int
+        val url = "$SUPABASE_URL/rest/v1/medicos?id_medico=eq.$medicoId&select=*"
+
+        val request = Request.Builder()
+            .url(url)
+            .addHeader("apikey", SUPABASE_KEY)
+            .addHeader("Authorization", "Bearer $SUPABASE_KEY")
+            .addHeader("Content-Type", "application/json")
+            .get()
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+                callback(null)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val body = response.body?.string()
+                if (response.isSuccessful && body != null) {
+                    try {
+                        val jsonArray = JSONArray(body)
+                        if (jsonArray.length() > 0) {
+                            callback(jsonArray.getJSONObject(0))
+                        } else {
+                            callback(null)
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        callback(null)
+                    }
+                } else {
+                    callback(null)
+                }
+            }
+        })
+    }
 }

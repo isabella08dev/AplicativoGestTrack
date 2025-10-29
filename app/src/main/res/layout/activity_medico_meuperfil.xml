@@ -1,10 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/fundo_perfil"
-    android:padding="20dp">
+    tools:context=".medico.MeuPerfilMedicoActivity">
 
-</RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/fundo_liso"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingTop="10dp"
+            android:paddingHorizontal="50dp">
+
+            <!-- Botão do Menu -->
+            <ImageButton
+                android:id="@+id/btnMenu"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="start"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/menu_icon"
+                app:tint="#badbd2"
+                android:contentDescription="Abrir menu" />
+
+            <!-- Ícone de Perfil -->
+            <ImageView
+                android:id="@+id/imgPerfil"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/perfil_icon"/> <!-- coloque aqui o nome do seu ícone -->
+
+
+            <!-- Título -->
+            <TextView
+                android:id="@+id/tvTitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Meu Perfil"
+                android:textColor="#000000"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="32dp"/>
+
+            <!-- Campos Editáveis -->
+            <EditText
+                android:id="@+id/editNomeMedico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/botao_bege_borda_azul"
+                android:hint="Nome"
+                android:padding="25dp"
+                android:textColor="#000000"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editCRM"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:hint="CRM"
+                android:inputType="number"
+                android:background="@drawable/botao_bege_borda_azul"
+                android:padding="25dp"
+                android:textColor="#000000"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editTelefoneMedico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:hint="Telefone"
+                android:inputType="number"
+                android:background="@drawable/botao_bege_borda_azul"
+                android:padding="25dp"
+                android:textColor="#000000"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editEmailMedico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:hint="E-mail"
+                android:inputType="textEmailAddress"
+                android:background="@drawable/botao_bege_borda_azul"
+                android:padding="25dp"
+                android:textColor="#000000"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/editSenhaMedico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:hint="Senha"
+                android:inputType="textPassword"
+                android:background="@drawable/botao_bege_borda_azul"
+                android:padding="25dp"
+                android:textColor="#000000"
+                android:textSize="18sp"/>
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnAtualizarMedico"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="65dp"
+                android:background="@drawable/botao_circular_azul"
+                android:paddingVertical="25dp"
+                android:text="Atualizar Dados"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:stateListAnimator="@null" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- MENU LATERAL -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/nav_header"
+        app:menu="@menu/menu_medico"
+        android:background="@color/white"
+        app:itemTextColor="@color/black"
+        app:itemIconTint="@color/black" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

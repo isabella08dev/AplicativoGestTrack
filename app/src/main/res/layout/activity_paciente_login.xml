@@ -16,7 +16,7 @@
 
         <!-- Email -->
         <EditText
-            android:id="@+id/editEmailMedico"
+            android:id="@+id/editEmailPaciente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
@@ -29,7 +29,7 @@
 
         <!-- Senha -->
         <EditText
-            android:id="@+id/editSenhaMedico"
+            android:id="@+id/editSenhaPaciente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
@@ -42,7 +42,7 @@
 
         <!-- Botão Entrar -->
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnEntrarMedico"
+            android:id="@+id/btnEntrarPaciente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="75dp"
