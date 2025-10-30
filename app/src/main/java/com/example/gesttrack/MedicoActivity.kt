@@ -6,7 +6,6 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gesttrack.medico.CadastroMedicoActivity
 import com.example.gesttrack.medico.LoginMedicoActivity
-
 class MedicoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
