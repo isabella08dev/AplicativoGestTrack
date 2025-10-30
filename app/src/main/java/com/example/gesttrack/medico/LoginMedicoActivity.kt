@@ -2,7 +2,6 @@ package com.example.gesttrack.medico
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
@@ -12,7 +11,6 @@ import com.example.gesttrack.DatabaseHelper
 import com.example.gesttrack.R
 
 class LoginMedicoActivity : AppCompatActivity() {
-
     private lateinit var editEmail: EditText
     private lateinit var editSenha: EditText
     private lateinit var btnEntrar: Button
@@ -21,67 +19,72 @@ class LoginMedicoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_medico_login)
 
+
         editEmail = findViewById(R.id.editEmailMedico)
         editSenha = findViewById(R.id.editSenhaMedico)
         btnEntrar = findViewById(R.id.btnEntrarMedico)
 
+        btnEntrar.setOnClickListener {
+            val email = editEmail.text.toString().trim()
+            val senha = editSenha.text.toString().trim()
 
-    btnEntrar.setOnClickListener {
-        val email = editEmail.text.toString().trim()
-        val senha = editSenha.text.toString().trim()
-
-        when {
-            email.isEmpty() -> {
-                Toast.makeText(this, "Digite o email!", Toast.LENGTH_SHORT).show()
-            }
-
-            !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
-                Toast.makeText(this, "Email inválido!", Toast.LENGTH_SHORT).show()
-            }
-
-            senha.isEmpty() -> {
-                Toast.makeText(this, "Digite a senha!", Toast.LENGTH_SHORT).show()
-            }
-
-            else -> {
-                verificarLogin(email, senha)
-            }
+            if (!validarCampos(email, senha)) return@setOnClickListener
+            verificarLogin(email, senha)
         }
     }
-}
 
+    private fun validarCampos(email: String, senha: String): Boolean {
+        return when {
+            email.isEmpty() -> {
+                exibirMensagem("Digite o email!")
+                false
+            }
+            !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                exibirMensagem("Email inválido!")
+                false
+            }
+            senha.isEmpty() -> {
+                exibirMensagem("Digite a senha!")
+                false
+            }
+            else -> true
+        }
+    }
     private fun verificarLogin(email: String, senha: String) {
         DatabaseHelper.obterMedicoPorEmailESenha(email, senha) { medicoJson ->
             runOnUiThread {
-                if (medicoJson != null) {
-                    val medicoId = medicoJson.optString("id_medico", "")
+                if (medicoJson == null) {
+                    exibirMensagem("Email ou senha incorretos!")
+                    return@runOnUiThread
+                }
 
-                    println("📍 JSON recebido: $medicoJson")
-                    println("📍 ID extraído: $medicoId")
+                val medicoId = medicoJson.optString("id_medico", "")
+                println("| JSON recebido: $medicoJson")
+                println("| ID extraído: $medicoId")
 
-                    if (medicoId.isNotEmpty()) {
-                        val sharedPref = getSharedPreferences("usuario_prefs", MODE_PRIVATE)
-                        with(sharedPref.edit()) {
-                            putString("id_medico", medicoId) // 🔥 putString ao invés de putInt
-                            commit()
-                        }
+                if (medicoId.isNotEmpty()) {
+                    salvarIdMedico(medicoId)
+                    exibirMensagem("Login realizado com sucesso!")
 
-                        val idSalvo = sharedPref.getString("id_medico", "")
-                        println("📍 ID salvo no SharedPrefs: $idSalvo")
-
-                        Toast.makeText(this, "Login realizado com sucesso!", Toast.LENGTH_SHORT)
-                            .show()
-                        val intent = Intent(this, PrincipalMedicoActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        Toast.makeText(this, "Erro ao obter ID do medico.", Toast.LENGTH_LONG)
-                            .show()
-                    }
+                    startActivity(Intent(this, PrincipalMedicoActivity::class.java))
+                    finish()
                 } else {
-                    Toast.makeText(this, "Email ou senha incorretos!", Toast.LENGTH_LONG).show()
+                    exibirMensagem("Erro ao obter ID do médico.")
                 }
             }
         }
+    }
+    private fun salvarIdMedico(id: String) {
+        val sharedPref = getSharedPreferences("usuario_prefs", MODE_PRIVATE)
+        sharedPref.edit().apply {
+            putString("id_medico", id)
+            apply()
+        }
+
+        val idSalvo = sharedPref.getString("id_medico", "")
+        println("| ID salvo no SharedPrefs: $idSalvo")
+    }
+    private fun exibirMensagem(mensagem: String) {
+        Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show()
     }
 }

@@ -57,9 +57,11 @@ class CalendarioMedicoActivity : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { item ->
             drawerLayout.closeDrawer(GravityCompat.START)
             when (item.itemId) {
-                R.id.nav_perfil -> true
+                R.id.nav_perfil -> {
+                    startActivity(Intent(this, MeuPerfilMedicoActivity::class.java))
+                    true
+                }
                 R.id.nav_calendario -> {
-                    startActivity(Intent(this, CalendarioMedicoActivity::class.java))
                     true
                 }
                 R.id.nav_meuspacientes -> {
@@ -132,8 +134,8 @@ class CalendarioMedicoActivity : AppCompatActivity() {
             icon.setPadding(24, 24, 24, 24)
 
             when (evento.tipo) {
-                TipoEvento.CONSULTA -> icon.setImageResource(R.drawable.notas_icon)
-                TipoEvento.PARTO -> icon.setImageResource(R.drawable.notas_icon)
+                TipoEvento.CONSULTA -> icon.setImageResource(R.drawable.consulta_icon)
+                TipoEvento.PARTO -> icon.setImageResource(R.drawable.bebe)
             }
 
             icon.setOnClickListener {
