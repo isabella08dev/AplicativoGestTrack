@@ -11,7 +11,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        // Repositório específico para o SDK do Gemini e outras bibliotecas do Google
+        maven { url = uri("https://jitpack.io") }
         maven { url = uri("https://maven.google.com") }
     }
 }

@@ -7,4 +7,8 @@
     <color name="postit_azul">#B3E5FC</color>
     <color name="postit_verde">#C8E6C9</color>
     <color name="postit_verde_menta">#B2DFDB</color>
+    <color name="purple_500">#badbd2</color>
+    <color name="blue_500">#2196F3</color>
+    <color name="yellow_500">#FFEB3B</color>
+
 </resources>
